@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Weather Report!</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        background-image: url('https://img.freepik.com/premium-photo/single-fluffy-white-cloud-hovers-light-blue-background-raining-down-thin-white-streams_14117-667493.jpg?w=2000');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        opacity:0.8;
+      }
+      div {
+        display: inline-block;
+        background-color: silver;
+        height: 200px;
+        width: 300px;
+        text-align: center;
+        border-radius: 12px 20px;
+        margin-left: 100px;
+        box-shadow: 12px 15px lightblue;
+      
+      }
+      h {
+        background-color: yellow;
+        display: block;
+        text-align: center;
+        font-size: 40px;
+      }
+      input[type="search"] {
+        border: 2px solid black;
+        height: 25px;
+        width: 180px;
+      }
+      button {
+        background-color: yellow;
+        width: 60px;
+        height: 25px;
+      }
+      button:hover {
+        background-color: rgb(172, 186, 62);
+      }
+      button:visited {
+        background-color: green;
+      }
+      footer {
+        background-color: yellow;
+        text-align: center;
+        display: block;
+      }
+      #res {
+        text-align: center;
+        color: rgb(255, 255, 255);
+        font-size: 18px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h>Weather Report</h><br><br><br>
+    <div>
+      <h2 style="font-size:30px;background-color:pink;border-radius:12px 20px">Weather Report</h2>
+      <input type="search" id="city" placeholder="Enter city" autocomplete="on"><br><br>
+      <button type="button" onclick="getWeather()">search</button>
+    </div><br><br>
+    <div id="res" class="main" style="float:right;margin-left:200px">
+      <h2 style="background-color:pink;display:block;border-radius:12px 20px;color:black">Report:</h2>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <script>
+      function getWeather() {
+        const city = document.getElementById("city").value;
+        const apiKey = '2c4862e54d01e25f4a8705a9caf2b417'; 
+        const apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    
+        fetch(apiURL)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error("City not found");
+            }
+            return response.json();
+          })
+          .then(data => {
+            displayWeather(data);
+          })
+          .catch(error => {
+            document.getElementById("res").innerHTML = `<p>Error: ${error.message}</p>`;
+          });
+      }
+    
+      function displayWeather(data) {
+        const weatherDiv = document.getElementById("res");
+        const temperature = data.main.temp;
+        const description = data.weather[0].description;
+        const city = data.name;
+    
+        weatherDiv.innerHTML = `
+          <h2>${city}</h2>
+          <p>Temperature: ${temperature} °C</p>
+          <p>Condition: ${description}</p>
+        `;
+      }
+    </script>
+    <footer>THANK YOU!</footer>
+  </body>
+</html>
